@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" >
+
+	<f:view contentType="text/html">
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<h:head>
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"></meta>
+			<title>Trabalho de RI</title>
+		</h:head>
+	
+		<h:body>
+			<p:layout fullPage="true" >
+				<p:layoutUnit position="center" >
+					<h:form id="formCenter">
+						<p:panel>
+							<p:panelGrid columns="2" id="panelGrid" styleClass="noBorder">
+								<h:outputText value="Tipo de consulta:"/>
+								<p:selectOneRadio value="#{informationRecoveryBean.consultType}" >
+									<f:selectItem itemValue="#{informationRecoveryBean.CONSULT_TYPE_TRABALHO1}" itemLabel="Trabalho 1"/>
+									<f:selectItem itemValue="#{informationRecoveryBean.CONSULT_TYPE_TRABALHO1_OTIMIZADO}" itemLabel="Trabalho 1 Otimizado"/>
+									<p:ajax listener="#{informationRecoveryBean.changeConsultType}" event="change" update="panelGrid panelGridStopwords panelRecallPrecision" />
+								</p:selectOneRadio>
+								<h:outputText value="Documentos:" />
+								<p:selectManyCheckbox id="checkBoxDocuments" value="#{informationRecoveryBean.documentsCF}" disabled="true">
+									<f:selectItem itemValue="#{informationRecoveryBean.CF74}" itemLabel="cf74" />
+									<f:selectItem itemValue="#{informationRecoveryBean.CF75}" itemLabel="cf75" />
+									<f:selectItem itemValue="#{informationRecoveryBean.CF76}" itemLabel="cf76"/>
+									<f:selectItem itemValue="#{informationRecoveryBean.CF77}" itemLabel="cf77"/>
+									<f:selectItem itemValue="#{informationRecoveryBean.CF78}" itemLabel="cf78"/>
+									<f:selectItem itemValue="#{informationRecoveryBean.CF79}" itemLabel="cf79"/>
+								</p:selectManyCheckbox>
+							</p:panelGrid>
+							
+							<p:panelGrid columns="3" styleClass="noBorder" id="panelGridStopwords">
+								<h:outputText value="StopWords:" />
+								<p:inputTextarea id="inputTextStopWords" value="#{informationRecoveryBean.stopWords}" autoResize="false" cols="50"
+												 rows="8" />
+								<h:outputLabel value="utilize ';' para separar"/>
+							</p:panelGrid>
+							<p:commandButton actionListener="#{informationRecoveryBean.search}" process="@this" value="Pesquisar" update="panelRecallPrecision"/>
+						</p:panel>
+						<p:panel id="panelRecallPrecision">
+							<p:panelGrid columns="2" styleClass="noBorder">
+								<p:dataTable id="dataGrid" widgetVar="dataGrid"  
+											 var="dataGridList" value="#{informationRecoveryBean.dataGridList}">  
+							        <p:column headerText="Recall">  
+							            <h:outputText value="#{dataGridList.key}" />  
+							        </p:column>  
+							  
+							        <p:column headerText="Precision">  
+							            <h:outputText value="#{dataGridList.value}" />  
+							        </p:column>  
+						        </p:dataTable>
+								<div id="visualization" />
+							</p:panelGrid>
+						</p:panel>
+					</h:form>
+				</p:layoutUnit>
+			</p:layout>
+		</h:body>
+		<script type="text/javascript" >
+			google.load("visualization", "1", {packages:["corechart"]});
+			function mountMaps(str) {
+
+				  var valores = str.split(",");
+				  var data = google.visualization.arrayToDataTable([
+					['Recall', 'Precision'],
+					[0, parseFloat(valores[0])],
+					[10, parseFloat(valores[1])],
+					[20,parseFloat(valores[2])],
+					[30, parseFloat(valores[3])],
+					[40, parseFloat(valores[4])],
+					[50, parseFloat(valores[5])],
+					[60, parseFloat(valores[6])],
+					[70, parseFloat(valores[7])],
+					[80, parseFloat(valores[8])],
+					[90, parseFloat(valores[9])],
+					[100, parseFloat(valores[10])]
+                  ]);
+				  // Create and draw the visualization.
+				  new google.visualization.LineChart(document.getElementById('visualization')).
+				      draw(data, {curveType: "none",
+				                  width: 500, height: 400}
+				          );
+					}
+		</script>	
+	</f:view>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view contentType="text/html">
+		<h:head>
+			<title>
+				Lucene
+			</title>
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+		</h:head>
+		
+		<h:body>
+			<p:layout fullPage="true" >
+				<p:layoutUnit position="center" >
+					<h:form id="formGrid" >
+						<p:panel>
+							<p:panelGrid columns="2" id="panelGrid" styleClass="noBorder">
+							
+								<h:outputText value="Query:"/>
+								<p:inputText value="#{luceneBean.queryText}" size="100"/>
+
+								<h:outputText value="Tipo de query:"/>
+								<p:selectOneRadio value="#{luceneBean.queryType}" >
+									<f:selectItem itemValue="#{luceneBean.termQuery}" itemLabel="Term Query"/>
+									<f:selectItem itemValue="#{luceneBean.rangeQuery}" itemLabel="Range Query"/>
+									<f:selectItem itemValue="#{luceneBean.prefixQuery}" itemLabel="Prefix Query"/>
+									<f:selectItem itemValue="#{luceneBean.booleanQuery}" itemLabel="Boolean Query"/>
+									<f:selectItem itemValue="#{luceneBean.phraseQuery}" itemLabel="Phrase Query"/>
+									<f:selectItem itemValue="#{luceneBean.wildcardQuery}" itemLabel="Wildcard Query"/>
+									<f:selectItem itemValue="#{luceneBean.fuzzyQuery}" itemLabel="Fuzzy Query"/>
+								</p:selectOneRadio>
+
+								<p:commandButton actionListener="#{luceneBean.consultar}" value="Consultar" />
+							</p:panelGrid>
+						</p:panel>
+					</h:form>
+				</p:layoutUnit>
+			</p:layout>
+		</h:body>
+	</f:view>
+</html>

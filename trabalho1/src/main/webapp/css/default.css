@@ -1,0 +1,4 @@
+.noBorder tr, .noBorder td {
+	background: none !important;
+    border: none !important;
+}
